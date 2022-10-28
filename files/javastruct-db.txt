@@ -1,0 +1,120 @@
+USE PlantAvail
+CREATE TABLE J_ServerIo (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name varchar(60) NOT NULL 
+)
+INSERT INTO J_ServerIo (Name)
+	VALUES ('Chemicals'), ('Smelting')
+CREATE TABLE J_Io (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Host varchar(60) UNIQUE NOT NULL,
+	ServerIoFk int NOT NULL
+)
+INSERT INTO J_Io (Host, ServerIoFk)
+	VALUES ('TS1', 1), ('TS2', 1), ('TS3', 2), ('TS4', 2)
+CREATE TABLE J_Channel (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name varchar(60) NOT NULL
+)
+CREATE TABLE J_DIO (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	IoFK int NOT NULL,
+	DeviceFK int NOT NULL,
+	Alias varchar(60)
+)
+CREATE TABLE J_Device (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	ChannelFK int NOT NULL,
+	Name varchar(60) NOT NULL
+)
+CREATE TABLE J_Data (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	devicefk int NOT NULL,
+	Address varchar(60) NOT NULL
+)
+/*attachement table*/
+CREATE TABLE J_StructureEvent (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Datafk int not null,
+	operator varchar(60) NOT NULL,
+	condition varchar(60) NOT NULL
+)
+/*attachment table*/
+CREATE TABLE J_SchedEvent (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name varchar(60) NOT NULL UNIQUE,
+	ScheduledRun DATETIME2 NOT NULL,
+	Interval int NOT NULL
+)
+CREATE TABLE J_Event (
+	/*unique id for this table*/
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	/* refers to either io or sched*/
+	EventTypesFK int NOT NULL,
+	/* refers to a specfic event that sits as a perant to this*/
+	AttachmentFK int NOT NULL,
+	/* refers to if its an email, sms, sql, oee*/
+	TypeFK int NOT NULL,
+	/* refers to a specific event that sits as a child to this*/
+	eventFK int NOT NULL
+)
+CREATE TABLE J_EventTypes (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name varchar(60) NOT NULL,
+)
+INSERT INTO J_EventTypes (name)
+VALUES ('Scheduler'), ('IO')
+CREATE TABLE J_Type (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name varchar(60) NOT NULL
+)
+INSERT INTO J_Type (Name)
+VALUES ('Email'), ('Sms'), ('Oee'), ('File')
+CREATE TABLE J_EventEmail (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	AddressGroup int NOT NULL,
+	Subject varchar(60) NOT NULL,
+	HTML varchar(max) NOT NULL
+)
+CREATE TABLE J_EventSms (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	AddressGroup int NOT NULL,
+	Message varchar(60) NOT NULL
+)
+CREATE TABLE J_AddressesGroup (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	addressgroup int NOT NULL,
+	RecipientTypefk int,
+	userFK int,
+	GroupFK int
+)
+CREATE TABLE J_RecipientType (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	Name varchar(60) NOT NULL
+)
+INSERT INTO J_RecipientType (Name)
+	VALUES ('to'),('cc'),('bcc')
+CREATE TABLE J_EventOee (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	type int NOT NULL,
+	comment varchar(60) NOT NULL
+)
+CREATE TABLE J_EventFileSql (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	tableCol varchar(60) NOT NULL,
+	query varchar(60) NOT NULL,
+	path varchar(60) NOT NULL
+)
+CREATE TABLE J_EventFileSqlDuration (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	EventFileSqlFK int NOT NULL,
+	EventFileSqlDurationTypeFK int NOT NULL,
+	Value int NOT NULL
+)
+CREATE TABLE J_EventFileSqlDurationType (
+	ID int NOT NULL PRIMARY KEY IDENTITY(1,1),
+	javaValue int NOT NULL,
+	Name varchar(60) NOT NULL
+)
+INSERT INTO J_EventFileSqlDurationType (Javavalue, Name)
+	VALUES (1, 'Year'), (2, 'Month'), (4, 'Week'), (5, 'Day'), (10, 'Hour'), (12, 'Minute'), (13, 'Second')

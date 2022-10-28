@@ -1,0 +1,40 @@
+LoadIo.add(String serverName, String hostName);
+//LoadIo.update(String oldServerName, String newServerName, String oldHostName, String newHostName);
+LoadIo.remove(String serverName, String hostName);
+LoadIo.LoadData.add(Integer serverId, Integer deviceId, String address, Integer id, boolean database);
+LoadIo.LoadData.add(Integer serverId, Integer deviceId, String address, Integer id, Integer id);
+//LoadIo.LoadData.update(Integer oldServerId, Integer oldDeviceId, String oldAddress, Integer newServerId, Integer newDeviceId, String newAddress);
+LoadIo.LoadData.remove(Integer serverId, Integer deviceId, String address);
+LoadIo.LoadData.LoadStructure.add(Integer dataId, Integer id, String condition, String operator);
+LoadIo.LoadData.LoadStructure.add(Integer serverId, Integer deviceId, String address, String condition, String operator);
+LoadIo.LoadData.LoadStructure.remove(Integer dataId, Integer id);
+//LoadIo.LoadData.LoadStructure.update(Integer dataId, Integer id, String condition, String operator);
+
+LoadSched.add(String name, Long run, Long interval);
+LoadSched.remove(String name);
+LoadSched.update(String oldName, String newName, Long interval);
+
+LoadList.getFromIo(Integer serverId, Integer deviceId, Integer itemId, String condition, String operator);
+LoadList.getFromSched(String name);
+	emailAdd(String subject, String html, Integer group);
+	emailRemove(Integer id);
+	emailUpdate(Integer id, Integer addressGroup, String subject, String html);
+	smsAdd(String message, Integer group);
+	smsRemove(Integer id);
+	smsUpdate(Integer id, Integer addressGroup, String message);
+	sqlAdd(String tableCol, String query, String path, HashMap<Integer, Integer> duration);
+	sqlRemove(Integer id);
+	sqlUpdate(Integer id, String tableCol, String query, String path);
+	sqlDurationAdd(Integer id, HashMap<Integer, Integer> duration);
+	sqlDurationUpdate(Integer id, Integer type, Integer value);
+	sqlDurationRemove(Integer id);
+
+AddressGroupData.addUser(Integer id, Integer user);
+AddressGroupData.addGroup(Integer id, Integer group);
+AddressGroupData.remove(Integer id);
+AddressGroupData.updateUser(Integer id, Integer addressgroup, Integer user);
+AddressGroupData.updateGroup(Integer id, Integer addressgroup, Integer group);
+
+Sms.add(ArrayList<String> to, String msg);
+SqlFileStatic.print(String table, String query, String path, String filename, TimeManipulation durations);
+SendMail.send(AddressStructure addresses, String subject, String html);
